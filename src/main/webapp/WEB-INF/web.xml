@@ -9,7 +9,7 @@
 
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>br.ucs.easydent.rest.RestApplication</param-value>
+			<param-value>br.ucs.easydent.rest.services.RestApplication</param-value>
 		</init-param>
 
 		<init-param>
@@ -19,12 +19,12 @@
 
 		<init-param>
 			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
-			<param-value>br.ucs.easydent.rest.RestRequestFilter</param-value>
+			<param-value>br.ucs.easydent.rest.services.filters.RestRequestFilter</param-value>
 		</init-param>
 
 		<init-param>
 			<param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
-			<param-value>br.ucs.easydent.rest.RestResponseFilter</param-value>
+			<param-value>br.ucs.easydent.rest.services.filters.RestResponseFilter</param-value>
 		</init-param>
 
 	</servlet>
