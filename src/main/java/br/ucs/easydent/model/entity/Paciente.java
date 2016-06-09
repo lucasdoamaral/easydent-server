@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -41,8 +42,13 @@ public class Paciente implements Entidade {
 
 	private String email;
 
+	@OneToOne
 	@JoinColumn(nullable = true)
 	private Usuario usuario;
+
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private Estabelecimento estabelecimento;
 
 	public Long getId() {
 		return this.id;
@@ -114,6 +120,14 @@ public class Paciente implements Entidade {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
 	}
 
 }

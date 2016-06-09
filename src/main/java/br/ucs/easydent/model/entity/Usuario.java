@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import br.ucs.easydent.model.enums.TipoUsuarioEnum;
@@ -36,10 +36,10 @@ public class Usuario implements Entidade {
 	@Column(nullable = false)
 	private Integer fgTipoUsuario;
 
-	@JoinColumn(nullable = true)
+	@OneToOne(mappedBy = "usuario")
 	private Paciente paciente;
 
-	@JoinColumn(nullable = true)
+	@OneToOne(mappedBy = "usuario")
 	private Dentista dentista;
 
 	public Usuario() {

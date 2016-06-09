@@ -32,6 +32,7 @@ public class RestApplication extends Application {
 		classes.add(TipoProcedimentoService.class);
 		classes.add(TrabalhoExternoService.class);
 		classes.add(PacienteService.class);
+		classes.add(LoginService.class);
 		
 		return classes;
 		

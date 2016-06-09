@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import br.ucs.easydent.model.intf.Entidade;
@@ -20,12 +21,15 @@ public class TrabalhoExterno implements Entidade {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trabalhoExterno")
 	private Long id;
 
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Laboratorio laboratorioExterno;
 
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Paciente paciente;
 
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Dentista dentista;
 

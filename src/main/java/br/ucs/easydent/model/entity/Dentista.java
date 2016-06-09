@@ -41,10 +41,20 @@ public class Dentista implements Entidade {
 	private List<Especialidade> especialidades;
 
 	@ManyToOne
+	@JoinColumn(nullable = true)
 	private Estabelecimento estabelecimento;
 
+	@OneToOne
 	@JoinColumn(nullable = true)
 	private Usuario usuario;
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 	public Dentista() {
 
@@ -105,14 +115,6 @@ public class Dentista implements Entidade {
 
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 }

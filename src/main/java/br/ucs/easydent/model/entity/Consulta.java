@@ -24,9 +24,11 @@ public class Consulta implements Entidade {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "consulta")
 	private Long id;
 
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Dentista dentista;
 
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Paciente paciente;
 
@@ -46,6 +48,7 @@ public class Consulta implements Entidade {
 	@JoinColumn
 	private Usuario confirmadoPor;
 
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Usuario criadoPor;
 
@@ -55,6 +58,7 @@ public class Consulta implements Entidade {
 	@Column(nullable = false)
 	private String procedimento;
 
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Agenda agenda;
 
