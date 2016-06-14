@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -30,6 +31,9 @@ public class Laboratorio implements Entidade {
 
 	@OneToOne
 	private Endereco endereco;
+	
+	@ManyToOne
+	private Estabelecimento estabelecimento;
 
 	public Long getId() {
 		return id;

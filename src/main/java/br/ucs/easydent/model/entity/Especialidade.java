@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import br.ucs.easydent.model.intf.Entidade;
@@ -21,6 +23,10 @@ public class Especialidade implements Entidade {
 	
 	@Column(nullable = false)
 	private String descricao;
+	
+	@ManyToOne
+	@JoinColumn(nullable=false)
+	private Estabelecimento estabelecimento;
 
 	@Override
 	public Long getId() {
@@ -37,6 +43,14 @@ public class Especialidade implements Entidade {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
 	}
 
 }

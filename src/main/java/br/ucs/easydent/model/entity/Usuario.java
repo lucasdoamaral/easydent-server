@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -42,6 +44,10 @@ public class Usuario implements Entidade {
 	@OneToOne(mappedBy = "usuario")
 	private Dentista dentista;
 
+	@ManyToOne
+	@JoinColumn(nullable=false)
+	private Estabelecimento estabelecimento;
+	
 	public Usuario() {
 		// TODO Auto-gene rated constructor stub
 	}
@@ -101,6 +107,14 @@ public class Usuario implements Entidade {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
 	}
 
 }

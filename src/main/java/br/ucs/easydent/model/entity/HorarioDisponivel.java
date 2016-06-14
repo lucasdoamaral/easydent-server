@@ -2,11 +2,13 @@ package br.ucs.easydent.model.entity;
 
 import java.util.Calendar;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import br.ucs.easydent.model.enums.DiaSemanaEnum;
@@ -35,6 +37,9 @@ public class HorarioDisponivel implements Entidade {
 
 	private Calendar horaAlmocoFinal;
 
+	@ManyToOne(optional=false, cascade=CascadeType.ALL)
+	private Agenda agenda;
+	
 	@Override
 	public Long getId() {
 		return id;

@@ -41,7 +41,7 @@ public class Dentista implements Entidade {
 	private List<Especialidade> especialidades;
 
 	@ManyToOne
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable = false)
 	private Estabelecimento estabelecimento;
 
 	@OneToOne

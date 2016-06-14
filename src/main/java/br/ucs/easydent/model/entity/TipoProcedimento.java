@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import br.ucs.easydent.model.intf.Entidade;
@@ -13,14 +14,17 @@ import br.ucs.easydent.model.intf.Entidade;
 public class TipoProcedimento implements Entidade {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@SequenceGenerator(name = "tipoProcedimento", sequenceName = "tipo_procedimento_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tipoProcedimento")
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String nome;
+
+	@ManyToOne(optional = false)
+	private Estabelecimento estabelecimento;
 
 	public Long getId() {
 		return id;

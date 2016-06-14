@@ -20,13 +20,13 @@ import br.ucs.easydent.rest.services.Token;
 @ManagedBean
 public class RestRequestFilter implements ContainerRequestFilter {
 
-
 	@EJB
 	private LoginSession loginSession;
 
-	private static final String GET = "GET";
+	private static final String GET_HTTP_METHOD = "GET";
+	private static final String OPTIONS_HTTP_METHOD = "OPTIONS";
 	private static final String AUTH_TOKEN = "X-AUTH-TOKEN";
-	
+
 	@Override
 	public ContainerRequest filter(ContainerRequest request) throws WebApplicationException {
 
@@ -35,14 +35,14 @@ public class RestRequestFilter implements ContainerRequestFilter {
 		}
 
 		Token token = getToken(request);
-		if (token == null ||  !token.isValid()) {
+		if (token == null || !token.isValid()) {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
 
 		return request;
 	}
-	
-	private String getAuthTokenFromRequest (ContainerRequest request) {
+
+	private String getAuthTokenFromRequest(ContainerRequest request) {
 		String auth = request.getHeaderValue(AUTH_TOKEN);
 		if (auth == null && !"".equals(auth)) {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
@@ -55,8 +55,10 @@ public class RestRequestFilter implements ContainerRequestFilter {
 		String method = containerRequest.getMethod();
 		String path = containerRequest.getPath(true);
 
-		return GET.equalsIgnoreCase(method) && (path.equals("application.wadl") || path.equals("application.wadl/xsd0.xsd"))
-				|| path.endsWith("login");
+		return (GET_HTTP_METHOD.equalsIgnoreCase(method) && (path.equals("application.wadl"))
+				|| path.equals("application.wadl/xsd0.xsd")) || path.endsWith("login")
+				|| OPTIONS_HTTP_METHOD.equalsIgnoreCase(method);
+
 	}
 
 	private Token getToken(ContainerRequest request) {

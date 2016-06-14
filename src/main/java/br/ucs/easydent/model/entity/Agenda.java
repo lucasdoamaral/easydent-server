@@ -26,10 +26,10 @@ public class Agenda implements Entidade {
 
 	@Column(nullable = false)
 	private String descricao;
-	
+
 	@OneToMany
 	private List<HorarioDisponivel> horarios;
-	
+
 	@OneToMany
 	private List<HorarioEspecial> horariosEspeciais;
 
