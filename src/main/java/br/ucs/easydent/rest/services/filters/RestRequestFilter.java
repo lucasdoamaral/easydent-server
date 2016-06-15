@@ -2,13 +2,17 @@ package br.ucs.easydent.rest.services.filters;
 
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response.Status;
 
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
 
 import br.ucs.easydent.ejb.session.LoginSession;
+import br.ucs.easydent.ejb.session.UsuarioSession;
+import br.ucs.easydent.model.entity.Usuario;
 import br.ucs.easydent.rest.services.Session;
 import br.ucs.easydent.rest.services.Token;
 
@@ -22,6 +26,12 @@ public class RestRequestFilter implements ContainerRequestFilter {
 
 	@EJB
 	private LoginSession loginSession;
+
+	@EJB
+	private UsuarioSession usuarioSession;
+
+	@Context
+	private HttpServletRequest httpRequest;
 
 	private static final String GET_HTTP_METHOD = "GET";
 	private static final String OPTIONS_HTTP_METHOD = "OPTIONS";
@@ -38,6 +48,9 @@ public class RestRequestFilter implements ContainerRequestFilter {
 		if (token == null || !token.isValid()) {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
+		
+		Usuario usuario = usuarioSession.buscarPorLogin(token.getUsername());
+		httpRequest.setAttribute("usuario_logado", usuario);
 
 		return request;
 	}

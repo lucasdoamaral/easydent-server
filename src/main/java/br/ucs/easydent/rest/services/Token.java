@@ -21,6 +21,10 @@ public class Token {
 	public String getValue() {
 		return value;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
 
 	public Calendar getExpireDate() {
 		return expireDate;

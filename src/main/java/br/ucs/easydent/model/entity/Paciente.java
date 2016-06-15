@@ -24,6 +24,9 @@ public class Paciente implements Entidade {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paciente")
 	private Long id;
 
+	@Column
+	private Integer codigo;
+	
 	@Column(nullable = false)
 	private String nome;
 
@@ -128,6 +131,14 @@ public class Paciente implements Entidade {
 
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
+	}
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
 	}
 
 }

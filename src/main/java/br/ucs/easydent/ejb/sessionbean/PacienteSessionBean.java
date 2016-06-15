@@ -21,18 +21,37 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 
 	public List<Paciente> buscarTodos(QueryParams params) {
 		String queryString = "SELECT e FROM Paciente AS e";
-		if (params.getOrdenacao()!=null) {
+		if (params.getOrdenacao() != null) {
 			queryString += " ORDER BY e." + params.getOrdenacao();
 		}
-		
+
 		Query query = em.createQuery(queryString);
 		Util.checkPagination(query, params);
-		
+
 		return query.getResultList();
 	}
 
 	public Paciente salvar(Paciente entidade) {
+
+		// Se for paciente novo
+		if (entidade.getId() == null) {
+
+			// Deve buscar o próximo número para o estabelecimento
+			Integer proximoCodigo = getProximoCodigoPacienteEstabelecimento(entidade.getEstabelecimento().getId());
+			entidade.setCodigo(proximoCodigo);
+		}
+
 		return em.merge(entidade);
+	}
+
+	private Integer getProximoCodigoPacienteEstabelecimento(Long estabelecimentoId) {
+
+		Query query = em
+				.createQuery("SELECT MAX(e.codigo) FROM Paciente AS e WHERE e.estabelecimento.id = :estabelecimentoId");
+		query.setParameter("estabelecimentoId", estabelecimentoId);
+
+		return ((Integer) query.getSingleResult()) + 1;
+
 	}
 
 	public void excluir(Long id) {
@@ -46,5 +65,5 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 		// TODO Criar método buscarPorFiltro em PacienteSessionBean
 		throw new NotImplementedException("PacienteSessionBean/buscarPorFiltro");
 	}
-	
+
 }
