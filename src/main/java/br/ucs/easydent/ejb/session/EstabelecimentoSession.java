@@ -5,6 +5,6 @@ import javax.ejb.Remote;
 import br.ucs.easydent.model.entity.Estabelecimento;
 
 @Remote
-public interface EstabelecimentoSession  extends EntityEJB<Estabelecimento> {
+public interface EstabelecimentoSession extends EntityEJB<Estabelecimento> {
 
 }

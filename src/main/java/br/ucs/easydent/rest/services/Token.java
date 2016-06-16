@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 public class Token {
 
-	private static final int MINUTOS_VALIDADE = 15;
+	private static final int MINUTOS_VALIDADE = 120 * 8;
 	private static final int MILISEGUNDOS_EM_MINUTO = 60000;
 
 	private String value;

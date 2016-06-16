@@ -14,6 +14,7 @@ import br.ucs.easydent.rest.services.entity.LaboratorioService;
 import br.ucs.easydent.rest.services.entity.PacienteService;
 import br.ucs.easydent.rest.services.entity.TipoProcedimentoService;
 import br.ucs.easydent.rest.services.entity.TrabalhoExternoService;
+import br.ucs.easydent.rest.services.entity.UsuarioService;
 
 //@ApplicationPath("/rest")
 public class RestApplication extends Application {
@@ -33,6 +34,7 @@ public class RestApplication extends Application {
 		classes.add(TrabalhoExternoService.class);
 		classes.add(PacienteService.class);
 		classes.add(LoginService.class);
+		classes.add(UsuarioService.class);
 		
 		return classes;
 		
