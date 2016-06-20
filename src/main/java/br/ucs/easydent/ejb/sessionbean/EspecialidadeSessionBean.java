@@ -11,15 +11,16 @@ import br.ucs.easydent.app.dto.filtro.BaseFilter;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.EspecialidadeSession;
 import br.ucs.easydent.model.entity.Especialidade;
+import br.ucs.easydent.model.entity.Usuario;
 
 @Stateless
 public class EspecialidadeSessionBean extends BaseSessionBean implements EspecialidadeSession {
 
-	public Especialidade buscarPorId(Long id) {
+	public Especialidade buscarPorId(Usuario usuario, Long id) {
 		return em.find(Especialidade.class, id);
 	}
 
-	public List<Especialidade> buscarTodos(QueryParams params) {
+	public List<Especialidade> buscarTodos(Usuario usuario, Options params) {
 
 		String queryString = "SELECT e FROM Especialidade AS e";
 		if (params.getOrdenacao() != null) {
@@ -33,18 +34,18 @@ public class EspecialidadeSessionBean extends BaseSessionBean implements Especia
 		return (List<Especialidade>) query.getResultList();
 	}
 
-	public Especialidade salvar(Especialidade entidade) {
+	public Especialidade salvar(Usuario usuario, Especialidade entidade) {
 		return em.merge(entidade);
 	}
 
-	public void excluir(Long id) {
+	public void excluir(Usuario usuario, Long id) {
 		Especialidade especialidade = em.find(Especialidade.class, id);
 		if (especialidade != null) {
 			em.remove(especialidade);
 		}
 	}
 
-	public List<Especialidade> buscarPorFiltro(BaseFilter<Especialidade> filtro) {
+	public List<Especialidade> buscarPorFiltro(Usuario usuario, BaseFilter<Especialidade> filtro) {
 		// TODO Criar método buscarPorFiltro em EntityEJB<Especialidade>
 		throw new NotImplementedException("EspecialidadeSessionBean/buscarPorFiltro");
 	}

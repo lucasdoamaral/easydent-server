@@ -1,6 +1,8 @@
 package br.ucs.easydent.ejb.sessionbean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -8,45 +10,81 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.NotImplementedException;
 
 import br.ucs.easydent.app.dto.filtro.BaseFilter;
+import br.ucs.easydent.app.exceptions.ProblemaPermissaoException;
+import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.PacienteSession;
-import br.ucs.easydent.model.entity.Estabelecimento;
 import br.ucs.easydent.model.entity.Paciente;
+import br.ucs.easydent.model.entity.Usuario;
 
 @Stateless
 public class PacienteSessionBean extends BaseSessionBean implements PacienteSession {
 
-	public Paciente buscarPorId(Long id) {
-		return em.find(Paciente.class, id);
+	public Paciente buscarPorId(Usuario usuario, Long id) throws ProblemaPermissaoException {
+		
+		Paciente paciente = em.find(Paciente.class, id);
+
+		// Check permissions
+		switch(usuario.getTipoUsuarioEnum()){
+		case ADMIN:
+			break;
+			
+		case DENTISTA:
+		case GERENTE:
+		case SECRETARIA:
+			if (!usuario.getEstabelecimento().equals(paciente.getEstabelecimento())){
+				throw new ProblemaPermissaoException();
+			}
+			break;
+
+		case PACIENTE:
+			if (paciente.getUsuario()== null || !paciente.getUsuario().equals(usuario)){
+				throw new ProblemaPermissaoException();
+			}
+			break;
+
+		default:
+			throw new ProblemaPermissaoException();
+		}
+		
+		return paciente;
 	}
 
-	public List<Paciente> buscarPorEstabelecimento(Estabelecimento estabelecimento, QueryParams params) {
+	public List<Paciente> buscarTodos(Usuario usuario, Options params) throws ProblemaPermissaoException {
 
-		StringBuilder select = new StringBuilder();
-		select.append(" SELECT e FROM Paciente AS e ");
-		select.append(" WHERE e.estabelecimento = :estabelecimento ");
+		Map<String, Object> queryParams = new HashMap<>();
 
-		Query query = em.createQuery(select.toString());
-		query.setParameter("estabelecimento", estabelecimento);
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("SELECT e FROM Paciente AS e");
+		queryString.append(" WHERE 1=1 ");
 
-		return (List<Paciente>) query.getResultList();
+		// Check permissions
+		switch (usuario.getTipoUsuarioEnum()) {
 
+		case ADMIN:
+			break;
+
+		case DENTISTA:
+		case GERENTE:
+		case SECRETARIA:
+			queryString.append(" AND e.estabelecimento = :estabelecimentoUsuario ");
+			queryParams.put("estabelecimentoUsuario", usuario.getEstabelecimento());
+
+		case PACIENTE:
+		default:
+			throw new ProblemaPermissaoException();
+		}
+
+		if (params.getOrdenacao() != null) {
+			queryString.append(" ORDER BY e." + params.getOrdenacao());
+		}
+
+		Query query = em.createQuery(queryString.toString());
+		Util.checkPagination(query, params);
+
+		return query.getResultList();
 	}
 
-	@Deprecated
-	public List<Paciente> buscarTodos(QueryParams params) {
-		throw new NotImplementedException("Não é possível selecionar todos os pacientes, por questões de segurança.");
-		// String queryString = "SELECT e FROM Paciente AS e";
-		// if (params.getOrdenacao() != null) {
-		// queryString += " ORDER BY e." + params.getOrdenacao();
-		// }
-		//
-		// Query query = em.createQuery(queryString);
-		// Util.checkPagination(query, params);
-		//
-		// return query.getResultList();
-	}
-
-	public Paciente salvar(Paciente entidade) {
+	public Paciente salvar(Usuario usuario, Paciente entidade) {
 
 		// Se for paciente novo
 		if (entidade.getId() == null) {
@@ -70,14 +108,14 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 
 	}
 
-	public void excluir(Long id) {
+	public void excluir(Usuario usuario, Long id) {
 		Paciente paciente = em.find(Paciente.class, id);
 		if (paciente != null) {
 			em.remove(paciente);
 		}
 	}
 
-	public List<Paciente> buscarPorFiltro(BaseFilter<Paciente> filtro) {
+	public List<Paciente> buscarPorFiltro(Usuario usuario, BaseFilter<Paciente> filtro) {
 		// TODO Criar método buscarPorFiltro em PacienteSessionBean
 		throw new NotImplementedException("PacienteSessionBean/buscarPorFiltro");
 	}

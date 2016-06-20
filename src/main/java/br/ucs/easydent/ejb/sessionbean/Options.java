@@ -2,7 +2,7 @@ package br.ucs.easydent.ejb.sessionbean;
 
 import java.io.Serializable;
 
-public class QueryParams implements Serializable {
+public class Options implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -12,11 +12,11 @@ public class QueryParams implements Serializable {
 
 	private String ordenacao;
 
-	public QueryParams() {
+	public Options() {
 		// TODO Criar construtor QueryParams
 	}
 
-	public QueryParams(Integer quantidadeRegistros, Integer primeiroRegistro, String ordenacao) {
+	public Options(Integer quantidadeRegistros, Integer primeiroRegistro, String ordenacao) {
 		this.quantidadeRegistros = quantidadeRegistros;
 		this.primeiroRegistro = primeiroRegistro;
 		this.ordenacao = ordenacao;

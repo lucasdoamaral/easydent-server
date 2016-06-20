@@ -26,7 +26,7 @@ public class Usuario implements Entidade {
 	@Column(nullable = false)
 	private String email;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String login;
 
 	@Column(nullable = false)
@@ -38,16 +38,18 @@ public class Usuario implements Entidade {
 	@Column(nullable = false)
 	private Integer fgTipoUsuario;
 
+	@Column(unique=true)
 	@OneToOne(mappedBy = "usuario")
 	private Paciente paciente;
 
+	@Column(unique = true)
 	@OneToOne(mappedBy = "usuario")
 	private Dentista dentista;
 
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(nullable = false)
 	private Estabelecimento estabelecimento;
-	
+
 	public Usuario() {
 		// TODO Auto-gene rated constructor stub
 	}

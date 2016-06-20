@@ -23,13 +23,13 @@ public class UsuarioSessionBean extends BaseSessionBean implements UsuarioSessio
 	@EJB
 	private EstabelecimentoSession estabelecimentoSessionBean;
 
-	public Usuario buscarPorId(Long id) {
-		Usuario usuario = em.find(Usuario.class, id);
-		detachUsuario(usuario);
-		return usuario;
+	public Usuario buscarPorId(Usuario usuario, Long id) {
+		Usuario _usuario = em.find(Usuario.class, id);
+		detachUsuario(_usuario);
+		return _usuario;
 	}
 
-	public List<Usuario> buscarTodos(QueryParams params) {
+	public List<Usuario> buscarTodos(Usuario usuario, Options params) {
 
 		String queryString = "SELECT e FROM Usuario AS e";
 		if (params.getOrdenacao() != null) {
@@ -45,14 +45,15 @@ public class UsuarioSessionBean extends BaseSessionBean implements UsuarioSessio
 		return usuarios;
 	}
 
-	public Usuario salvar(Usuario entidade) {
+	public Usuario salvar(Usuario usuario, Usuario entidade) {
 
 		// Se for usuário novo
 		if (entidade.getId() == null) {
 
 			// Se for um estabelecimento novo
 			if (entidade.getEstabelecimento().getId() == null) {
-				Estabelecimento estabelecimentoSalvo = estabelecimentoSessionBean.salvar(entidade.getEstabelecimento());
+				Estabelecimento estabelecimentoSalvo = estabelecimentoSessionBean.salvar(usuario,
+						entidade.getEstabelecimento());
 				entidade.setEstabelecimento(estabelecimentoSalvo);
 			}
 		}
@@ -60,14 +61,14 @@ public class UsuarioSessionBean extends BaseSessionBean implements UsuarioSessio
 		return em.merge(entidade);
 	}
 
-	public void excluir(Long id) {
-		Usuario usuario = em.find(Usuario.class, id);
-		if (usuario != null) {
-			em.remove(usuario);
+	public void excluir(Usuario usuario, Long id) {
+		Usuario _usuario = em.find(Usuario.class, id);
+		if (_usuario != null) {
+			em.remove(_usuario);
 		}
 	}
 
-	public List<Usuario> buscarPorFiltro(BaseFilter<Usuario> filtro) {
+	public List<Usuario> buscarPorFiltro(Usuario usuario, BaseFilter<Usuario> filtro) {
 		// TODO Criar método buscarPorFiltro em UsuarioSessionBean
 		throw new NotImplementedException("UsuarioSessionBean/buscarPorFiltro");
 	}

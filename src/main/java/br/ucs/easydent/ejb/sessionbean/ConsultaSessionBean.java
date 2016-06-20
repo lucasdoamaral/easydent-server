@@ -17,17 +17,18 @@ import br.ucs.easydent.ejb.session.ConsultaSession;
 import br.ucs.easydent.model.entity.Consulta;
 import br.ucs.easydent.model.entity.Dentista;
 import br.ucs.easydent.model.entity.Especialidade;
+import br.ucs.easydent.model.entity.Usuario;
 
 @Stateless
 public class ConsultaSessionBean extends BaseSessionBean implements ConsultaSession {
 
-	public Consulta buscarPorId(Long id) {
+	public Consulta buscarPorId(Usuario usuario, Long id) {
 		Consulta consulta = em.find(Consulta.class, id);
 		detach(consulta);
 		return consulta;
 	}
 
-	public List<Consulta> buscarTodos(QueryParams params) {
+	public List<Consulta> buscarTodos(Usuario usuario, Options params) {
 		String queryString = "SELECT e FROM Consulta AS e";
 		if (params.getOrdenacao() != null) {
 			queryString += " ORDER BY e." + params.getOrdenacao();
@@ -42,18 +43,18 @@ public class ConsultaSessionBean extends BaseSessionBean implements ConsultaSess
 		return consultas;
 	}
 
-	public Consulta salvar(Consulta entidade) {
+	public Consulta salvar(Usuario usuario, Consulta entidade) {
 		return em.merge(entidade);
 	}
 
-	public void excluir(Long id) {
-		Consulta consulta = this.buscarPorId(id);
+	public void excluir(Usuario usuario, Long id) {
+		Consulta consulta = this.buscarPorId(usuario, id);
 		if (consulta != null) {
 			em.remove(consulta);
 		}
 	}
 
-	public List<Consulta> buscarPorFiltro(BaseFilter<Consulta> filtro) {
+	public List<Consulta> buscarPorFiltro(Usuario usuario, BaseFilter<Consulta> filtro) {
 		// TODO Criar método buscarPorFiltro em EntityEJB<Consulta>
 		throw new NotImplementedException("ConsultaSessionBean/buscarPorFiltro");
 	}

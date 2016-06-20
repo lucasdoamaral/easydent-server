@@ -24,6 +24,7 @@ public class Laboratorio implements Entidade {
 	@Column(nullable = false)
 	private String nome;
 
+	@Column(unique = true)
 	private String cnpj;
 
 	@Column(nullable = false)
@@ -31,7 +32,7 @@ public class Laboratorio implements Entidade {
 
 	@OneToOne
 	private Endereco endereco;
-	
+
 	@ManyToOne
 	private Estabelecimento estabelecimento;
 

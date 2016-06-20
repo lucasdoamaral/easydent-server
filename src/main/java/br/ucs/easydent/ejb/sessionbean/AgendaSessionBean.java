@@ -13,15 +13,16 @@ import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.AgendaSession;
 import br.ucs.easydent.model.entity.Agenda;
 import br.ucs.easydent.model.entity.Consulta;
+import br.ucs.easydent.model.entity.Usuario;
 
 @Stateless
 public class AgendaSessionBean extends BaseSessionBean implements AgendaSession {
 
-	public Agenda buscarPorId(Long id) {
+	public Agenda buscarPorId(Usuario usuario, Long id) {
 		return em.find(Agenda.class, id);
 	}
 
-	public List<Agenda> buscarTodos(QueryParams params) {
+	public List<Agenda> buscarTodos(Usuario usuario, Options params) {
 		String queryString = "SELECT e FROM Agenda AS e";
 		if (params.getOrdenacao() != null) {
 			queryString += " ORDER BY e." + params.getOrdenacao();
@@ -36,18 +37,18 @@ public class AgendaSessionBean extends BaseSessionBean implements AgendaSession 
 		return agendas;
 	}
 
-	public Agenda salvar(Agenda entidade) {
+	public Agenda salvar(Usuario usuario, Agenda entidade) {
 		return em.merge(entidade);
 	}
 
-	public void excluir(Long id) {
-		Agenda agenda = this.buscarPorId(id);
+	public void excluir(Usuario usuario, Long id) {
+		Agenda agenda = this.buscarPorId(usuario, id);
 		if (agenda != null) {
 			em.remove(agenda);
 		}
 	}
 
-	public List<Agenda> buscarPorFiltro(BaseFilter<Agenda> filtro) {
+	public List<Agenda> buscarPorFiltro(Usuario usuario, BaseFilter<Agenda> filtro) {
 		// TODO Criar método buscarPorFiltro em EntityEJB<Agenda>
 		return null;
 	}
@@ -64,7 +65,7 @@ public class AgendaSessionBean extends BaseSessionBean implements AgendaSession 
 	}
 
 	@Override
-	public List<Consulta> buscarConsultasPorData(Agenda agenda, Calendar inicio, Calendar fim, QueryParams params) {
+	public List<Consulta> buscarConsultasPorData(Agenda agenda, Calendar inicio, Calendar fim, Options params) {
 
 		Map<String, Object> _params = new HashMap<>();
 		StringBuilder queryString = new StringBuilder();

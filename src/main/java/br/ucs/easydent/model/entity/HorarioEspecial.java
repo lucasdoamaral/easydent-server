@@ -2,10 +2,8 @@ package br.ucs.easydent.model.entity;
 
 import java.util.Calendar;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class HorarioEspecial extends HorarioDisponivel {

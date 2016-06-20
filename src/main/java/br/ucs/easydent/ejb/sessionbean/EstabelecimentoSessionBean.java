@@ -11,15 +11,16 @@ import br.ucs.easydent.app.dto.filtro.BaseFilter;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.EstabelecimentoSession;
 import br.ucs.easydent.model.entity.Estabelecimento;
+import br.ucs.easydent.model.entity.Usuario;
 
 @Stateless
 public class EstabelecimentoSessionBean extends BaseSessionBean implements EstabelecimentoSession {
 
-	public Estabelecimento buscarPorId(Long id) {
+	public Estabelecimento buscarPorId(Usuario usuario, Long id) {
 		return em.find(Estabelecimento.class, id);
 	}
 
-	public List<Estabelecimento> buscarTodos(QueryParams params) {
+	public List<Estabelecimento> buscarTodos(Usuario usuario, Options params) {
 		String queryString = "SELECT e FROM Estabelecimento AS e";
 		if (params.getOrdenacao() != null) {
 			queryString += " ORDER BY e." + params.getOrdenacao();
@@ -31,18 +32,18 @@ public class EstabelecimentoSessionBean extends BaseSessionBean implements Estab
 		return (List<Estabelecimento>) query.getResultList();
 	}
 
-	public Estabelecimento salvar(Estabelecimento entidade) {
+	public Estabelecimento salvar(Usuario usuario, Estabelecimento entidade) {
 		return em.merge(entidade);
 	}
 
-	public void excluir(Long id) {
+	public void excluir(Usuario usuario, Long id) {
 		Estabelecimento estabelecimento = em.find(Estabelecimento.class, id);
 		if (estabelecimento != null) {
 			em.remove(estabelecimento);
 		}
 	}
 
-	public List<Estabelecimento> buscarPorFiltro(BaseFilter<Estabelecimento> filtro) {
+	public List<Estabelecimento> buscarPorFiltro(Usuario usuario, BaseFilter<Estabelecimento> filtro) {
 		// TODO Criar método buscarPorFiltro em EstabelecimentoSessionBean
 		throw new NotImplementedException("EstabelecimentoSessionBean/buscarPorFiltro");
 	}

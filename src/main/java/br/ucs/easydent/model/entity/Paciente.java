@@ -11,10 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import br.ucs.easydent.model.intf.Entidade;
 
 @Entity
+@Table(uniqueConstraints = { @UniqueConstraint(name = "Código", columnNames = { "estabelecimento_id", "codigo" }),
+		@UniqueConstraint(name = "CPF", columnNames = { "estabelecimento_id", "cpf" }) })
 public class Paciente implements Entidade {
 
 	private static final long serialVersionUID = 1L;
@@ -26,13 +30,14 @@ public class Paciente implements Entidade {
 
 	@Column
 	private Integer codigo;
-	
+
 	@Column(nullable = false)
 	private String nome;
 
 	@Column(nullable = false)
 	private Calendar dataNascimento;
 
+	@Column(name = "cpf")
 	private String cpf;
 
 	@OneToOne
@@ -49,6 +54,7 @@ public class Paciente implements Entidade {
 	@JoinColumn(nullable = true)
 	private Usuario usuario;
 
+	@Column(name = "estabelecimento_id")
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Estabelecimento estabelecimento;

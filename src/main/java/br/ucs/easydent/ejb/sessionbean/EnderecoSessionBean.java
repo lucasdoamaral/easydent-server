@@ -11,15 +11,16 @@ import br.ucs.easydent.app.dto.filtro.BaseFilter;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.EnderecoSession;
 import br.ucs.easydent.model.entity.Endereco;
+import br.ucs.easydent.model.entity.Usuario;
 
 @Stateless
 public class EnderecoSessionBean extends BaseSessionBean implements EnderecoSession {
 
-	public Endereco buscarPorId(Long id) {
+	public Endereco buscarPorId(Usuario usuario, Long id) {
 		return em.find(Endereco.class, id);
 	}
 
-	public List<Endereco> buscarTodos(QueryParams params) {
+	public List<Endereco> buscarTodos(Usuario usuario, Options params) {
 		String queryString = "SELECT e FROM Endereco AS e";
 		if (params.getOrdenacao() != null) {
 			queryString += " ORDER BY e." + params.getOrdenacao();
@@ -31,18 +32,18 @@ public class EnderecoSessionBean extends BaseSessionBean implements EnderecoSess
 		return (List<Endereco>) query.getResultList();
 	}
 
-	public Endereco salvar(Endereco entidade) {
+	public Endereco salvar(Usuario usuario, Endereco entidade) {
 		return em.merge(entidade);
 	}
 
-	public void excluir(Long id) {
+	public void excluir(Usuario usuario, Long id) {
 		Endereco endereco = em.find(Endereco.class, id);
 		if (endereco != null) {
 			em.remove(endereco);
 		}
 	}
 
-	public List<Endereco> buscarPorFiltro(BaseFilter<Endereco> filtro) {
+	public List<Endereco> buscarPorFiltro(Usuario usuario, BaseFilter<Endereco> filtro) {
 		// TODO Criar método buscarPorFiltro em EnderecoSessionBean
 		throw new NotImplementedException("EnderecoSessionBean/buscarPorFiltro");
 	}

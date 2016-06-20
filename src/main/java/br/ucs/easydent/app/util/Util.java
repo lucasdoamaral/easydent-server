@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import javax.persistence.Query;
 
-import br.ucs.easydent.ejb.sessionbean.QueryParams;
+import br.ucs.easydent.ejb.sessionbean.Options;
 
 public class Util {
 
@@ -15,7 +15,7 @@ public class Util {
 		}
 	}
 
-	public static void checkPagination(Query query, QueryParams params) {
+	public static void checkPagination(Query query, Options params) {
 
 		if (params.getQuantidadeRegistros() != null) {
 			query.setMaxResults(params.getQuantidadeRegistros());

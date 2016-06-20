@@ -14,7 +14,7 @@ public class LoginSessionBean extends BaseSessionBean implements LoginSession {
 	@Override
 	public Usuario login(String usuario, String senha) throws FalhaLoginException {
 
-		Query query = em.createQuery("SELECT e FROM Usuario AS e WHERE e.login= :usuario AND e.senha = :senha ");
+		Query query = em.createQuery("SELECT e FROM Usuario AS e WHERE (e.login= :usuario AND e.senha = :senha) or (e.email= :usuario AND e.senha = :senha) ");
 		query.setParameter("usuario", usuario);
 		query.setParameter("senha", senha);
 
