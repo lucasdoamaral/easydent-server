@@ -58,10 +58,6 @@ public class Consulta implements Entidade {
 	@Column(nullable = false)
 	private String procedimento;
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Agenda agenda;
-
 	@Override
 	public Long getId() {
 		return id;
@@ -141,14 +137,6 @@ public class Consulta implements Entidade {
 
 	public void setProcedimento(String procedimento) {
 		this.procedimento = procedimento;
-	}
-
-	public Agenda getAgenda() {
-		return agenda;
-	}
-
-	public void setAgenda(Agenda agenda) {
-		this.agenda = agenda;
 	}
 
 	public void setId(Long id) {

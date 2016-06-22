@@ -48,7 +48,7 @@ public class AgendaSessionBean extends BaseSessionBean implements AgendaSession 
 		}
 	}
 
-	public List<Agenda> buscarPorFiltro(Usuario usuario, BaseFilter<Agenda> filtro) {
+	public List<Agenda> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Agenda> filtro) {
 		// TODO Criar método buscarPorFiltro em EntityEJB<Agenda>
 		return null;
 	}
@@ -60,8 +60,6 @@ public class AgendaSessionBean extends BaseSessionBean implements AgendaSession 
 	}
 
 	private void detach(Agenda agenda) {
-		agenda.setHorarios(agenda.getHorarios());
-		agenda.setHorariosEspeciais(agenda.getHorariosEspeciais());
 	}
 
 	@Override

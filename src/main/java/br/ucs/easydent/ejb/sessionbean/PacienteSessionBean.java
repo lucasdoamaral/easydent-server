@@ -20,24 +20,24 @@ import br.ucs.easydent.model.entity.Usuario;
 public class PacienteSessionBean extends BaseSessionBean implements PacienteSession {
 
 	public Paciente buscarPorId(Usuario usuario, Long id) throws ProblemaPermissaoException {
-		
+
 		Paciente paciente = em.find(Paciente.class, id);
 
 		// Check permissions
-		switch(usuario.getTipoUsuarioEnum()){
+		switch (usuario.getTipoUsuarioEnum()) {
 		case ADMIN:
 			break;
-			
+
 		case DENTISTA:
 		case GERENTE:
 		case SECRETARIA:
-			if (!usuario.getEstabelecimento().equals(paciente.getEstabelecimento())){
+			if (!usuario.getEstabelecimento().equals(paciente.getEstabelecimento())) {
 				throw new ProblemaPermissaoException();
 			}
 			break;
 
 		case PACIENTE:
-			if (paciente.getUsuario()== null || !paciente.getUsuario().equals(usuario)){
+			if (paciente.getUsuario() == null || !paciente.getUsuario().equals(usuario)) {
 				throw new ProblemaPermissaoException();
 			}
 			break;
@@ -45,7 +45,7 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 		default:
 			throw new ProblemaPermissaoException();
 		}
-		
+
 		return paciente;
 	}
 
@@ -115,7 +115,7 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 		}
 	}
 
-	public List<Paciente> buscarPorFiltro(Usuario usuario, BaseFilter<Paciente> filtro) {
+	public List<Paciente> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Paciente> filtro) {
 		// TODO Criar método buscarPorFiltro em PacienteSessionBean
 		throw new NotImplementedException("PacienteSessionBean/buscarPorFiltro");
 	}

@@ -22,13 +22,13 @@ public class TipoProcedimentoSessionBean extends BaseSessionBean implements Tipo
 
 	public List<TipoProcedimento> buscarTodos(Usuario usuario, Options params) {
 		String queryString = "SELECT e FROM TipoProcedimento AS e";
-		if (params.getOrdenacao()!=null){
+		if (params.getOrdenacao() != null) {
 			queryString += " ORDER BY e." + params.getOrdenacao();
 		}
-		
+
 		Query query = em.createQuery(queryString);
 		Util.checkPagination(query, params);
-		
+
 		return query.getResultList();
 	}
 
@@ -43,7 +43,8 @@ public class TipoProcedimentoSessionBean extends BaseSessionBean implements Tipo
 		}
 	}
 
-	public List<TipoProcedimento> buscarPorFiltro(Usuario usuario, BaseFilter<TipoProcedimento> filtro) {
+	public List<TipoProcedimento> buscarPorFiltro(Usuario usuario, Options options,
+			BaseFilter<TipoProcedimento> filtro) {
 		// TODO Criar método buscarPorFiltro em TipoProcedimentoSessionBean
 		throw new NotImplementedException("TipoProcedimentoSessionBean/buscarPorFiltro");
 	}

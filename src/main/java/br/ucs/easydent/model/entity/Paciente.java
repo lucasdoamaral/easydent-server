@@ -54,9 +54,8 @@ public class Paciente implements Entidade {
 	@JoinColumn(nullable = true)
 	private Usuario usuario;
 
-	@Column(name = "estabelecimento_id")
 	@ManyToOne
-	@JoinColumn(nullable = true)
+	@JoinColumn(nullable = true, name = "estabelecimento_id")
 	private Estabelecimento estabelecimento;
 
 	public Long getId() {

@@ -25,10 +25,10 @@ public class EnderecoSessionBean extends BaseSessionBean implements EnderecoSess
 		if (params.getOrdenacao() != null) {
 			queryString += " ORDER BY e." + params.getOrdenacao();
 		}
-		
+
 		Query query = em.createQuery(queryString);
 		Util.checkPagination(query, params);
-		
+
 		return (List<Endereco>) query.getResultList();
 	}
 
@@ -43,7 +43,7 @@ public class EnderecoSessionBean extends BaseSessionBean implements EnderecoSess
 		}
 	}
 
-	public List<Endereco> buscarPorFiltro(Usuario usuario, BaseFilter<Endereco> filtro) {
+	public List<Endereco> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Endereco> filtro) {
 		// TODO Criar método buscarPorFiltro em EnderecoSessionBean
 		throw new NotImplementedException("EnderecoSessionBean/buscarPorFiltro");
 	}

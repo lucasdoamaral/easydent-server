@@ -1,7 +1,6 @@
 package br.ucs.easydent.ejb.sessionbean;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +8,8 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import br.ucs.easydent.app.dto.filtro.BaseFilter;
+import br.ucs.easydent.app.dto.filtro.ConsultaFilter;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.ConsultaSession;
 import br.ucs.easydent.model.entity.Consulta;
@@ -54,9 +52,48 @@ public class ConsultaSessionBean extends BaseSessionBean implements ConsultaSess
 		}
 	}
 
-	public List<Consulta> buscarPorFiltro(Usuario usuario, BaseFilter<Consulta> filtro) {
-		// TODO Criar método buscarPorFiltro em EntityEJB<Consulta>
-		throw new NotImplementedException("ConsultaSessionBean/buscarPorFiltro");
+	public List<Consulta> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Consulta> filtroBase) {
+
+		ConsultaFilter filtro = (ConsultaFilter) filtroBase;
+
+		StringBuilder queryString = new StringBuilder();
+		Map<String, Object> params = new HashMap<>();
+
+		queryString.append(" SELECT e FROM Consulta AS e ");
+		queryString.append(" WHERE 1=1 ");
+
+		if (filtro.getDataMaiorDoQue() != null) {
+			queryString.append(" AND e.data > :dataMaiorDoQue ");
+			params.put("dataMaiorDoQue", filtro.getDataMaiorDoQue());
+		}
+
+		if (filtro.getDataMenorDoQue() != null) {
+			queryString.append(" AND e.data < :dataMenorDoQue ");
+			params.put("dataMenorDoQue", filtro.getDataMaiorDoQue());
+		}
+
+		if (filtro.getSituacaoConsulta() != null) {
+			queryString.append(" AND e.fgSituacaoConsultaEnum = :situacaoConsultaEnum");
+			params.put("situacaoConsultaEnum", filtro.getSituacaoConsulta().getId());
+		}
+
+		if (filtro.getDentista() != null) {
+			queryString.append(" AND e.dentista = :dentista ");
+			params.put("dentista", filtro.getDentista());
+		}
+
+		if (options.getOrdenacao() != null) {
+			queryString.append(" ORDER BY e." + options.getOrdenacao());
+		}
+
+		Query query = em.createQuery(queryString.toString());
+		Util.checkPagination(query, options);
+		Util.setParams(query, params);
+
+		List<Consulta> consultas = (List<Consulta>) query.getResultList();
+		detach(consultas);
+		return consultas;
+
 	}
 
 	private void detach(List<Consulta> consultas) {
@@ -68,37 +105,9 @@ public class ConsultaSessionBean extends BaseSessionBean implements ConsultaSess
 	private void detach(Consulta consulta) {
 		Dentista dentista = consulta.getDentista();
 		dentista.setEspecialidades(new ArrayList<Especialidade>(dentista.getEspecialidades()));
+		dentista.setHorarios(new ArrayList<>(dentista.getHorarios()));
+		dentista.setHorariosEspeciais(new ArrayList<>(dentista.getHorariosEspeciais()));
 		consulta.setDentista(dentista);
-	}
-
-	@Override
-	public List<Consulta> buscarProximasConsultas(Dentista dentista, Integer proximas) {
-
-		StringBuilder queryString = new StringBuilder();
-		Map<String, Object> params = new HashMap<>();
-
-		queryString.append(" SELECT e FROM Consulta AS e ");
-		queryString.append(" WHERE e.data > :agora ");
-
-		params.put("agora", Calendar.getInstance());
-
-		if (dentista != null) {
-			queryString.append(" AND e.dentista = :dentista ");
-			params.put("dentista", dentista);
-		}
-
-		queryString.append(" LIMIT " + proximas);
-
-		Query query = em.createQuery(queryString.toString());
-		Util.setParams(query, params);
-
-		return (List<Consulta>) query.getResultList();
-
-	}
-
-	@Override
-	public List<Consulta> buscarProximasConsultas(Integer proximas) {
-		return buscarProximasConsultas(null, proximas);
 	}
 
 }

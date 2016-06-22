@@ -92,7 +92,7 @@ public abstract class EntityService<T extends Entidade> {
 		System.out.println("Calling OPTIONS HTTP method.");
 	}
 
-	private Usuario getUserFromToken(String tokenValue) {
+	protected Usuario getUserFromToken(String tokenValue) {
 		Token token = Session.getToken(tokenValue);
 		if (token != null && token.isValid()) {
 			try {

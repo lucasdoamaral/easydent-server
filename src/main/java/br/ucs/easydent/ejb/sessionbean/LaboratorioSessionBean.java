@@ -50,7 +50,7 @@ public class LaboratorioSessionBean extends BaseSessionBean implements Laborator
 	}
 
 	@Override
-	public List<Laboratorio> buscarPorFiltro(Usuario usuario, BaseFilter<Laboratorio> filtro) {
+	public List<Laboratorio> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Laboratorio> filtro) {
 		// TODO Criar método buscarPorFiltro em EntityEJB<Laboratorio>
 		return null;
 	}

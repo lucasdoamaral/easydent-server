@@ -75,7 +75,7 @@ public class DentistaSessionBean extends BaseSessionBean implements DentistaSess
 		}
 	}
 
-	public List<Dentista> buscarPorFiltro(Usuario usuario, BaseFilter<Dentista> filtro) {
+	public List<Dentista> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Dentista> filtro) {
 		// TODO Criar método buscarPorFiltro em EntityEJB<Dentista>
 		throw new NotImplementedException("DentistaSessionBean/buscarPorFiltro");
 	}

@@ -18,6 +18,6 @@ public interface EntityEJB<T extends Entidade> {
 
 	public void excluir(Usuario usuario, Long id);
 
-	public List<T> buscarPorFiltro(Usuario usuario, BaseFilter<T> filtro);
+	public List<T> buscarPorFiltro(Usuario usuario, Options params, BaseFilter<T> filtro);
 
 }

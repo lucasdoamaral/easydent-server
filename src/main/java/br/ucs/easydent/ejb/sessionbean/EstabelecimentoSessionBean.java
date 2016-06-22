@@ -43,7 +43,7 @@ public class EstabelecimentoSessionBean extends BaseSessionBean implements Estab
 		}
 	}
 
-	public List<Estabelecimento> buscarPorFiltro(Usuario usuario, BaseFilter<Estabelecimento> filtro) {
+	public List<Estabelecimento> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Estabelecimento> filtro) {
 		// TODO Criar método buscarPorFiltro em EstabelecimentoSessionBean
 		throw new NotImplementedException("EstabelecimentoSessionBean/buscarPorFiltro");
 	}

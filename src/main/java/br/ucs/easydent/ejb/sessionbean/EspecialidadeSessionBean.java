@@ -45,7 +45,7 @@ public class EspecialidadeSessionBean extends BaseSessionBean implements Especia
 		}
 	}
 
-	public List<Especialidade> buscarPorFiltro(Usuario usuario, BaseFilter<Especialidade> filtro) {
+	public List<Especialidade> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Especialidade> filtro) {
 		// TODO Criar método buscarPorFiltro em EntityEJB<Especialidade>
 		throw new NotImplementedException("EspecialidadeSessionBean/buscarPorFiltro");
 	}

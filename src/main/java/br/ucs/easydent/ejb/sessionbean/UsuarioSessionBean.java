@@ -68,7 +68,7 @@ public class UsuarioSessionBean extends BaseSessionBean implements UsuarioSessio
 		}
 	}
 
-	public List<Usuario> buscarPorFiltro(Usuario usuario, BaseFilter<Usuario> filtro) {
+	public List<Usuario> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<Usuario> filtro) {
 		// TODO Criar método buscarPorFiltro em UsuarioSessionBean
 		throw new NotImplementedException("UsuarioSessionBean/buscarPorFiltro");
 	}

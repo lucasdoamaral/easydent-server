@@ -44,10 +44,32 @@ public class Dentista implements Entidade {
 	@JoinColumn(nullable = false)
 	private Estabelecimento estabelecimento;
 
+	@OneToMany
+	private List<HorarioDisponivel> horarios;
+
+	@OneToMany
+	private List<HorarioEspecial> horariosEspeciais;
+	
+	public List<HorarioDisponivel> getHorarios() {
+		return horarios;
+	}
+
+	public void setHorarios(List<HorarioDisponivel> horarios) {
+		this.horarios = horarios;
+	}
+
+	public List<HorarioEspecial> getHorariosEspeciais() {
+		return horariosEspeciais;
+	}
+
+	public void setHorariosEspeciais(List<HorarioEspecial> horariosEspeciais) {
+		this.horariosEspeciais = horariosEspeciais;
+	}
+
 	@OneToOne
 	@JoinColumn(nullable = true)
 	private Usuario usuario;
-
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}

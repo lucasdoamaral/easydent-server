@@ -25,13 +25,13 @@ public class TrabalhoExternoSessionBean extends BaseSessionBean implements Traba
 		if (params.getOrdenacao() != null) {
 			queryString += " ORDER BY e." + params.getOrdenacao();
 		}
-		
+
 		Query query = em.createQuery(queryString);
 		Util.checkPagination(query, params);
-		
+
 		List<TrabalhoExterno> trabalhosExternos = (List<TrabalhoExterno>) query.getResultList();
 		detach(trabalhosExternos);
-		
+
 		return trabalhosExternos;
 	}
 
@@ -47,7 +47,7 @@ public class TrabalhoExternoSessionBean extends BaseSessionBean implements Traba
 	}
 
 	@Override
-	public List<TrabalhoExterno> buscarPorFiltro(Usuario usuario, BaseFilter<TrabalhoExterno> filtro) {
+	public List<TrabalhoExterno> buscarPorFiltro(Usuario usuario, Options options, BaseFilter<TrabalhoExterno> filtro) {
 		// TODO Criar método buscarPorFiltro em TrabalhoExternoSessionBean
 		return null;
 	}
