@@ -1,4 +1,4 @@
-package br.ucs.easydent.rest.services;
+package br.ucs.easydent.rest.services.auth;
 
 import java.util.Calendar;
 import java.util.HashMap;

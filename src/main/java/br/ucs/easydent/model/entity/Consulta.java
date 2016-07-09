@@ -11,11 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import br.ucs.easydent.model.enums.SituacaoConsultaEnum;
-import br.ucs.easydent.model.intf.Entidade;
+import br.ucs.easydent.model.intf.EntidadeComEstabelecimento;
 
 @Entity
-public class Consulta implements Entidade {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Consulta implements EntidadeComEstabelecimento {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,6 +37,11 @@ public class Consulta implements Entidade {
 
 	@Column(nullable = false)
 	private Calendar data;
+
+	@Column
+	private Calendar dataFinal;
+
+	private String hora;
 
 	private Integer duracaoMinutos;
 
@@ -83,8 +91,16 @@ public class Consulta implements Entidade {
 		return data;
 	}
 
-	public void setData(Calendar data) {
-		this.data = data;
+	public Integer getDuracaoMinutos() {
+		return duracaoMinutos;
+	}
+
+	public Boolean getDiaCompleto() {
+		return diaCompleto;
+	}
+
+	public void setDiaCompleto(Boolean diaCompleto) {
+		this.diaCompleto = diaCompleto;
 	}
 
 	public Calendar getDataCriacao() {
@@ -93,14 +109,6 @@ public class Consulta implements Entidade {
 
 	public void setDataCriacao(Calendar dataCriacao) {
 		this.dataCriacao = dataCriacao;
-	}
-
-	public Usuario getCriadoPor() {
-		return criadoPor;
-	}
-
-	public void setCriadoPor(Usuario criadoPor) {
-		this.criadoPor = criadoPor;
 	}
 
 	public Boolean getConfirmada() {
@@ -119,8 +127,12 @@ public class Consulta implements Entidade {
 		this.confirmadoPor = confirmadoPor;
 	}
 
-	public SituacaoConsultaEnum getSituacaoConsultaEnum() {
-		return SituacaoConsultaEnum.getById(getFgSituacaoConsultaEnum());
+	public Usuario getCriadoPor() {
+		return criadoPor;
+	}
+
+	public void setCriadoPor(Usuario criadoPor) {
+		this.criadoPor = criadoPor;
 	}
 
 	public Integer getFgSituacaoConsultaEnum() {
@@ -131,6 +143,14 @@ public class Consulta implements Entidade {
 		this.fgSituacaoConsultaEnum = fgSituacaoConsultaEnum;
 	}
 
+	public void setSituacaoConsultaEnum(SituacaoConsultaEnum situacaoConsultaEnum) {
+		this.fgSituacaoConsultaEnum = situacaoConsultaEnum != null ? situacaoConsultaEnum.getId() : null;
+	}
+
+	public SituacaoConsultaEnum getSituacaoConsultaEnum() {
+		return SituacaoConsultaEnum.getById(fgSituacaoConsultaEnum);
+	}
+
 	public String getProcedimento() {
 		return procedimento;
 	}
@@ -139,24 +159,58 @@ public class Consulta implements Entidade {
 		this.procedimento = procedimento;
 	}
 
+	public String getHora() {
+		return hora;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Integer getDuracaoMinutos() {
-		return duracaoMinutos;
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+
+	@Override
+	public Estabelecimento getEstabelecimento() {
+		if (dentista != null) {
+			return dentista.getEstabelecimento();
+		}
+		if (paciente != null) {
+			return paciente.getEstabelecimento();
+		}
+		return null;
+	}
+
+	public Calendar getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setData(Calendar data) {
+		this.data = data;
+		if (data != null && duracaoMinutos != null) {
+			Calendar _data = (Calendar) data.clone();
+			_data.add(Calendar.MINUTE, duracaoMinutos);
+			this.dataFinal = _data;
+		}
 	}
 
 	public void setDuracaoMinutos(Integer duracaoMinutos) {
 		this.duracaoMinutos = duracaoMinutos;
+		if (duracaoMinutos != null && data != null) {
+			Calendar _dataFinal = (Calendar) data.clone();
+			_dataFinal.add(Calendar.MINUTE, duracaoMinutos);
+			this.dataFinal = _dataFinal;
+		}
 	}
 
-	public Boolean getDiaCompleto() {
-		return diaCompleto;
-	}
-
-	public void setDiaCompleto(Boolean diaCompleto) {
-		this.diaCompleto = diaCompleto;
+	public void setDataFinal(Calendar dataFinal) {
+		this.dataFinal = dataFinal;
+		if (dataFinal != null && duracaoMinutos != null) {
+			Calendar _data = (Calendar) dataFinal.clone();
+			_data.add(Calendar.MINUTE, duracaoMinutos * -1);
+			this.dataFinal = _data;
+		}
 	}
 
 }

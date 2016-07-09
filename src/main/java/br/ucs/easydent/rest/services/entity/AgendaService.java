@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -24,13 +25,19 @@ public class AgendaService extends EntityService<Agenda> {
 	protected EntityEJB<Agenda> getEJB() {
 		return agendaSession;
 	}
-	
+
 	@GET
 	@Path("/{agendaId}/consultas")
-	public List<Consulta> buscarConsultas(@QueryParam("offset") Integer primeiroRegistro, @QueryParam("max-results") Integer quantidadeRegistros,
-			@QueryParam("sort") String ordenacao, @QueryParam("data-inicial") Date dataInicial, @QueryParam("data-final") Date dataFinal, @PathParam("agendaId") Long agendaId ){
+	public List<Consulta> buscarConsultas(@QueryParam("offset") Integer primeiroRegistro,
+			@QueryParam("max-results") Integer quantidadeRegistros, @QueryParam("sort") String ordenacao,
+			@QueryParam("data-inicial") Date dataInicial, @QueryParam("data-final") Date dataFinal,
+			@PathParam("agendaId") Long agendaId) {
 		return null;
 	}
 
+	@OPTIONS
+	public void options() {
+		// System.out.println("Calling OPTIONS HTTP method.");
+	}
 
 }

@@ -1,6 +1,8 @@
 package br.ucs.easydent.app.dto.filtro;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import br.ucs.easydent.model.entity.Consulta;
 import br.ucs.easydent.model.entity.Dentista;
@@ -15,6 +17,10 @@ public class ConsultaFilter extends BaseFilter<Consulta> {
 	private Calendar dataMaiorDoQue;
 	private Calendar dataMenorDoQue;
 	private SituacaoConsultaEnum situacaoConsulta;
+	
+	private List<SituacaoConsultaEnum> situacoes = new ArrayList<>();
+	
+	private Calendar data;
 	
 	public ConsultaFilter() {
 		// TODO Auto-generated constructor stub
@@ -50,6 +56,22 @@ public class ConsultaFilter extends BaseFilter<Consulta> {
 
 	public void setSituacaoConsulta(SituacaoConsultaEnum situacaoConsulta) {
 		this.situacaoConsulta = situacaoConsulta;
+	}
+
+	public Calendar getData() {
+		return data;
+	}
+
+	public void setData(Calendar data) {
+		this.data = data;
+	}
+
+	public List<SituacaoConsultaEnum> getSituacoes() {
+		return situacoes;
+	}
+
+	public void setSituacoes(List<SituacaoConsultaEnum> situacoes) {
+		this.situacoes = situacoes;
 	}
 	
 }

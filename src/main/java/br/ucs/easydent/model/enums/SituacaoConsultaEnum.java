@@ -4,7 +4,7 @@ import br.ucs.easydent.app.util.Util2;
 
 public enum SituacaoConsultaEnum implements EasyDentEnum {
 
-	AGENDADA(0, "Agendada"), ATENDIDA(1, "Atendida"), CANCELADA(2, "Cancelada");
+	AGENDADA(0, "Agendada"), ATENDIDA(1, "Atendida"), CANCELADA(2, "Cancelada"), NAO_COMPARECIDA(3, "Falta");
 
 	private SituacaoConsultaEnum(int id, String nome) {
 		this.id = id;
@@ -23,8 +23,8 @@ public enum SituacaoConsultaEnum implements EasyDentEnum {
 	public String getNome() {
 		return nome;
 	}
-	
-	public static SituacaoConsultaEnum getById (Integer id) {
+
+	public static SituacaoConsultaEnum getById(Integer id) {
 		return Util2.getEnumById(SituacaoConsultaEnum.values(), id);
 	}
 

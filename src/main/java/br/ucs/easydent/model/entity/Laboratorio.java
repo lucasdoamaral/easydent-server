@@ -9,10 +9,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
-import br.ucs.easydent.model.intf.Entidade;
+import br.ucs.easydent.model.intf.EntidadeComEstabelecimento;
 
 @Entity
-public class Laboratorio implements Entidade {
+public class Laboratorio implements EntidadeComEstabelecimento {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,6 +23,15 @@ public class Laboratorio implements Entidade {
 
 	@Column(nullable = false)
 	private String nome;
+
+	@Column
+	private String email;
+	
+	@Column
+	private String telefone;
+
+	@Column
+	private String celular;
 
 	@Column(unique = true)
 	private String cnpj;
@@ -46,6 +55,22 @@ public class Laboratorio implements Entidade {
 
 	public String getNome() {
 		return nome;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	public void setNome(String nome) {
@@ -74,6 +99,22 @@ public class Laboratorio implements Entidade {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

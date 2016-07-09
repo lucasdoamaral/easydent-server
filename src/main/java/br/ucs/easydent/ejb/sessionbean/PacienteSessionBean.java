@@ -11,6 +11,7 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import br.ucs.easydent.app.dto.filtro.BaseFilter;
 import br.ucs.easydent.app.exceptions.ProblemaPermissaoException;
+import br.ucs.easydent.app.exceptions.RegistroNaoEncontradoException;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.PacienteSession;
 import br.ucs.easydent.model.entity.Paciente;
@@ -19,9 +20,14 @@ import br.ucs.easydent.model.entity.Usuario;
 @Stateless
 public class PacienteSessionBean extends BaseSessionBean implements PacienteSession {
 
-	public Paciente buscarPorId(Usuario usuario, Long id) throws ProblemaPermissaoException {
+	public Paciente buscarPorId(Usuario usuario, Long id)
+			throws ProblemaPermissaoException, RegistroNaoEncontradoException {
 
 		Paciente paciente = em.find(Paciente.class, id);
+
+		if (paciente == null) {
+			throw new RegistroNaoEncontradoException();
+		}
 
 		// Check permissions
 		switch (usuario.getTipoUsuarioEnum()) {
@@ -68,6 +74,7 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 		case SECRETARIA:
 			queryString.append(" AND e.estabelecimento = :estabelecimentoUsuario ");
 			queryParams.put("estabelecimentoUsuario", usuario.getEstabelecimento());
+			break;
 
 		case PACIENTE:
 		default:
@@ -79,6 +86,7 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 		}
 
 		Query query = em.createQuery(queryString.toString());
+		Util.setParams(query, queryParams);
 		Util.checkPagination(query, params);
 
 		return query.getResultList();
@@ -89,8 +97,12 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 		// Se for paciente novo
 		if (entidade.getId() == null) {
 
+			if (entidade.getEstabelecimento() == null) {
+				entidade.setEstabelecimento(usuario.getEstabelecimento());
+			}
+
 			// Deve buscar o próximo número para o estabelecimento
-			Integer proximoCodigo = getProximoCodigoPacienteEstabelecimento(entidade.getEstabelecimento().getId());
+			Integer proximoCodigo = getProximoCodigoPacienteEstabelecimento(usuario.getEstabelecimento().getId());
 			entidade.setCodigo(proximoCodigo);
 		}
 

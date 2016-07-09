@@ -13,10 +13,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
-import br.ucs.easydent.model.intf.Entidade;
+import br.ucs.easydent.model.intf.EntidadeComEstabelecimento;
 
 @Entity
-public class Dentista implements Entidade {
+public class Dentista implements EntidadeComEstabelecimento {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,8 +28,14 @@ public class Dentista implements Entidade {
 	@Column(nullable = false)
 	private String nome;
 
+	@Column
+	private String email;
+
+	@Column
+	private String celular;
+
 	@Column(nullable = false)
-	private String CRO;
+	private Integer CRO;
 
 	@Column(nullable = false)
 	private String estadoCRO;
@@ -49,7 +55,7 @@ public class Dentista implements Entidade {
 
 	@OneToMany
 	private List<HorarioEspecial> horariosEspeciais;
-	
+
 	public List<HorarioDisponivel> getHorarios() {
 		return horarios;
 	}
@@ -69,7 +75,7 @@ public class Dentista implements Entidade {
 	@OneToOne
 	@JoinColumn(nullable = true)
 	private Usuario usuario;
-	
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -95,11 +101,11 @@ public class Dentista implements Entidade {
 		this.nome = nome;
 	}
 
-	public String getCRO() {
+	public Integer getCRO() {
 		return CRO;
 	}
 
-	public void setCRO(String cRO) {
+	public void setCRO(Integer cRO) {
 		CRO = cRO;
 	}
 
@@ -137,6 +143,47 @@ public class Dentista implements Entidade {
 
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Dentista other = (Dentista) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

@@ -9,10 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import br.ucs.easydent.model.intf.Entidade;
+import br.ucs.easydent.model.intf.EntidadeComEstabelecimento;
 
 @Entity
-public class Especialidade implements Entidade {
+public class Especialidade implements EntidadeComEstabelecimento {
 
 	private static final long serialVersionUID = 1L;
 	

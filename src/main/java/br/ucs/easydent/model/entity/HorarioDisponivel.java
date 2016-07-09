@@ -37,9 +37,12 @@ public class HorarioDisponivel implements Entidade {
 
 	private Calendar horaAlmocoFinal;
 
-	@ManyToOne(optional=false, cascade=CascadeType.ALL)
-	private Agenda agenda;
-	
+	// @ManyToOne(optional=false, cascade=CascadeType.ALL)
+	// private Agenda agenda;
+
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	private Dentista dentista;
+
 	@Override
 	public Long getId() {
 		return id;
@@ -91,6 +94,14 @@ public class HorarioDisponivel implements Entidade {
 
 	public void setHoraAlmocoFinal(Calendar horaAlmocoFinal) {
 		this.horaAlmocoFinal = horaAlmocoFinal;
+	}
+
+	public Dentista getDentista() {
+		return dentista;
+	}
+
+	public void setDentista(Dentista dentista) {
+		this.dentista = dentista;
 	}
 
 	public void setId(Long id) {

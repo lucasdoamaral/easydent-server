@@ -10,11 +10,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import br.ucs.easydent.model.enums.TipoUsuarioEnum;
-import br.ucs.easydent.model.intf.Entidade;
+import br.ucs.easydent.model.intf.EntidadeComEstabelecimento;
 
 @Entity
-public class Usuario implements Entidade {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Usuario implements EntidadeComEstabelecimento {
 
 	private static final long serialVersionUID = 1L;
 
@@ -115,6 +118,22 @@ public class Usuario implements Entidade {
 
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
+	}
+
+	public Dentista getDentista() {
+		return dentista;
+	}
+
+	public void setDentista(Dentista dentista) {
+		this.dentista = dentista;
+	}
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
 	}
 
 }

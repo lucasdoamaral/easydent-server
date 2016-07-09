@@ -10,11 +10,11 @@ import javax.ws.rs.core.Response.Status;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
 
-import br.ucs.easydent.app.RegistroNaoEncontradoException;
+import br.ucs.easydent.app.exceptions.RegistroNaoEncontradoException;
 import br.ucs.easydent.ejb.session.LoginSession;
 import br.ucs.easydent.ejb.session.UsuarioSession;
-import br.ucs.easydent.rest.services.Session;
-import br.ucs.easydent.rest.services.Token;
+import br.ucs.easydent.rest.services.auth.Session;
+import br.ucs.easydent.rest.services.auth.Token;
 
 /**
  * Jersey HTTP Basic Auth filter
@@ -53,10 +53,12 @@ public class RestRequestFilter implements ContainerRequestFilter {
 		}
 
 		try {
-			usuarioSession.buscarPorLogin(token.getUsername());
+			usuarioSession.buscarPorLoginOuEmail(token.getUsername());
 		} catch (RegistroNaoEncontradoException e) {
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 		}
+
+		System.out.println(token.getUsername() + " " + request.getMethod() + " " + request.getPath());
 
 		return request;
 	}

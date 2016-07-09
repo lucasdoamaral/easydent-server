@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import br.ucs.easydent.rest.services.auth.LoginService;
 import br.ucs.easydent.rest.services.entity.AgendaService;
 import br.ucs.easydent.rest.services.entity.ConsultaService;
 import br.ucs.easydent.rest.services.entity.DentistaService;

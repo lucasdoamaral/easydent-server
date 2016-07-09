@@ -14,12 +14,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import br.ucs.easydent.model.intf.Entidade;
+import br.ucs.easydent.model.intf.EntidadeComEstabelecimento;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "Código", columnNames = { "estabelecimento_id", "codigo" }),
 		@UniqueConstraint(name = "CPF", columnNames = { "estabelecimento_id", "cpf" }) })
-public class Paciente implements Entidade {
+public class Paciente implements EntidadeComEstabelecimento {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class Paciente implements Entidade {
 	@Column(nullable = false)
 	private String nome;
 
-	@Column(nullable = false)
+	@Column
 	private Calendar dataNascimento;
 
 	@Column(name = "cpf")
@@ -55,7 +55,7 @@ public class Paciente implements Entidade {
 	private Usuario usuario;
 
 	@ManyToOne
-	@JoinColumn(nullable = true, name = "estabelecimento_id")
+	@JoinColumn(nullable = false, name = "estabelecimento_id")
 	private Estabelecimento estabelecimento;
 
 	public Long getId() {

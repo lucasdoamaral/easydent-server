@@ -9,13 +9,16 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import br.ucs.easydent.app.RegistroNaoEncontradoException;
 import br.ucs.easydent.app.dto.filtro.BaseFilter;
+import br.ucs.easydent.app.exceptions.HorarioNaoDisponivelException;
+import br.ucs.easydent.app.exceptions.ProblemaPermissaoException;
+import br.ucs.easydent.app.exceptions.RegistroNaoEncontradoException;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.EstabelecimentoSession;
 import br.ucs.easydent.ejb.session.UsuarioSession;
 import br.ucs.easydent.model.entity.Estabelecimento;
 import br.ucs.easydent.model.entity.Usuario;
+import br.ucs.easydent.model.enums.TipoUsuarioEnum;
 
 @Stateless
 public class UsuarioSessionBean extends BaseSessionBean implements UsuarioSession {
@@ -45,7 +48,7 @@ public class UsuarioSessionBean extends BaseSessionBean implements UsuarioSessio
 		return usuarios;
 	}
 
-	public Usuario salvar(Usuario usuario, Usuario entidade) {
+	public Usuario salvar(Usuario usuario, Usuario entidade) throws ProblemaPermissaoException, HorarioNaoDisponivelException {
 
 		// Se for usuário novo
 		if (entidade.getId() == null) {
@@ -56,6 +59,10 @@ public class UsuarioSessionBean extends BaseSessionBean implements UsuarioSessio
 						entidade.getEstabelecimento());
 				entidade.setEstabelecimento(estabelecimentoSalvo);
 			}
+			if (entidade.getTipoUsuarioEnum() == null) {
+				entidade.setTipoUsuarioEnum(TipoUsuarioEnum.GERENTE);
+			}
+
 		}
 
 		return em.merge(entidade);
@@ -88,6 +95,20 @@ public class UsuarioSessionBean extends BaseSessionBean implements UsuarioSessio
 
 		Query query = em.createQuery("SELECT e FROM Usuario AS e WHERE e.login = :login");
 		query.setParameter("login", login);
+
+		try {
+			return (Usuario) query.getSingleResult();
+		} catch (NoResultException e) {
+			throw new RegistroNaoEncontradoException();
+		}
+	}
+
+	@Override
+	public Usuario buscarPorLoginOuEmail(String loginOuEmail) throws RegistroNaoEncontradoException {
+
+		Query query = em
+				.createQuery("SELECT e FROM Usuario AS e WHERE e.login = :loginOuEmail OR e.email = :loginOuEmail ");
+		query.setParameter("loginOuEmail", loginOuEmail);
 
 		try {
 			return (Usuario) query.getSingleResult();

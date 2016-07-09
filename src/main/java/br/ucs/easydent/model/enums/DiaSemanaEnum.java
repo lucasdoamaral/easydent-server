@@ -2,8 +2,8 @@ package br.ucs.easydent.model.enums;
 
 public enum DiaSemanaEnum {
 
-	SEGUNDA(1, "Segunda-feira"), TERCA(2, "Terça-Feira"), QUARTA(3, "Quarta-Feira"),
-	QUINTA(5, "Quinta-feira"), SEXTA(6, "Sexta-Feira"), SABADO(7, "Sábado"), DOMINGO(8, "Domingo");
+	DOMINGO(1, "Domingo"), SEGUNDA(2, "Segunda-feira"), TERCA(3, "Terça-Feira"), QUARTA(4, "Quarta-Feira"),
+	QUINTA(5, "Quinta-feira"), SEXTA(6, "Sexta-Feira"), SABADO(7, "Sábado");
 	
 	private DiaSemanaEnum (Integer id, String nome) {
 		this.id = id;

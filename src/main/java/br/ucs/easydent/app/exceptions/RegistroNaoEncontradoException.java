@@ -2,22 +2,22 @@ package br.ucs.easydent.app.exceptions;
 
 import javax.ws.rs.core.Response.Status;
 
-public class ProblemaPermissaoException extends EasydentException {
+public class RegistroNaoEncontradoException extends EasydentException {
 
 	private static final long serialVersionUID = 1L;
 	private String mensagem;
 
-	public ProblemaPermissaoException() {
-		super("Você não possui permissão para acessar esse recurso/método.");
+	public RegistroNaoEncontradoException() {
+		super("Registro não encontrado.");
 	}
 
-	public ProblemaPermissaoException(String mensagem) {
+	public RegistroNaoEncontradoException(String mensagem) {
 		super(mensagem);
 		this.mensagem = mensagem;
 	}
 
 	public Status getStatus() {
-		return Status.FORBIDDEN;
+		return Status.NO_CONTENT;
 	}
 
 	@Override
