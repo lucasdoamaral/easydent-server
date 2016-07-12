@@ -87,6 +87,11 @@ public class RestRequestFilter implements ContainerRequestFilter {
 			return PULAR_VALIDACAO;
 		}
 
+		// Está verificando disponibilidade de um nome de usuário
+		if (path.contains("/checkusername/") || path.contains("/checkemail/")) {
+			return PULAR_VALIDACAO;
+		}
+
 		// Método OPTIONS
 		if (OPTIONS_HTTP_METHOD.equalsIgnoreCase(method)) {
 			return PULAR_VALIDACAO;

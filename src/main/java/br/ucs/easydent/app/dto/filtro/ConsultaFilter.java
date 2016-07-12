@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.ucs.easydent.model.entity.Consulta;
 import br.ucs.easydent.model.entity.Dentista;
+import br.ucs.easydent.model.entity.Paciente;
 import br.ucs.easydent.model.enums.SituacaoConsultaEnum;
 
 public class ConsultaFilter extends BaseFilter<Consulta> {
@@ -13,15 +14,17 @@ public class ConsultaFilter extends BaseFilter<Consulta> {
 	private static final long serialVersionUID = 1L;
 
 	private Dentista dentista;
-	
+
 	private Calendar dataMaiorDoQue;
 	private Calendar dataMenorDoQue;
 	private SituacaoConsultaEnum situacaoConsulta;
-	
+
 	private List<SituacaoConsultaEnum> situacoes = new ArrayList<>();
-	
+
+	private Paciente paciente;
+
 	private Calendar data;
-	
+
 	public ConsultaFilter() {
 		// TODO Auto-generated constructor stub
 	}
@@ -73,5 +76,13 @@ public class ConsultaFilter extends BaseFilter<Consulta> {
 	public void setSituacoes(List<SituacaoConsultaEnum> situacoes) {
 		this.situacoes = situacoes;
 	}
-	
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
+
 }

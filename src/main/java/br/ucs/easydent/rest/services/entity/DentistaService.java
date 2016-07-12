@@ -14,8 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import br.ucs.easydent.app.dto.filtro.ConsultaFilter;
-import br.ucs.easydent.app.exceptions.ProblemaPermissaoException;
-import br.ucs.easydent.app.exceptions.RegistroNaoEncontradoException;
+import br.ucs.easydent.app.exceptions.EasydentException;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.ConsultaSession;
 import br.ucs.easydent.ejb.session.DentistaSession;
@@ -66,7 +65,7 @@ public class DentistaService extends EntityService<Dentista> {
 			@PathParam("dentistaId") Long dentistaId, @PathParam("anoInicial") Integer anoInicial,
 			@PathParam("mesInicial") Integer mesInicial, @PathParam("diaInicial") Integer diaInicial,
 			@PathParam("anoFinal") Integer anoFinal, @PathParam("mesFinal") Integer mesFinal,
-			@PathParam("diaFinal") Integer diaFinal) {
+			@PathParam("diaFinal") Integer diaFinal) throws RestException {
 
 		Calendar dataInicial = Util.newCalendar(anoInicial, mesInicial, diaInicial);
 		Util.beginOfTheDay(dataInicial);
@@ -76,9 +75,7 @@ public class DentistaService extends EntityService<Dentista> {
 		Dentista dentista;
 		try {
 			dentista = dentistaSession.buscarPorId(getUserFromToken(token), dentistaId);
-		} catch (ProblemaPermissaoException e) {
-			throw new RestException(e);
-		} catch (RegistroNaoEncontradoException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 
@@ -89,7 +86,7 @@ public class DentistaService extends EntityService<Dentista> {
 
 		try {
 			return consultaSession.buscarPorFiltro(getUserFromToken(token), new Options(), filtro);
-		} catch (ProblemaPermissaoException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 	}

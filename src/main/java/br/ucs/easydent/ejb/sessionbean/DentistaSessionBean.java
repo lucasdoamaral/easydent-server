@@ -15,10 +15,14 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.NotImplementedException;
 
 import br.ucs.easydent.app.dto.filtro.BaseFilter;
+import br.ucs.easydent.app.dto.filtro.ConsultaFilter;
+import br.ucs.easydent.app.exceptions.EasydentException;
+import br.ucs.easydent.app.exceptions.ExclusaoNaoPermitida;
 import br.ucs.easydent.app.exceptions.ProblemaPermissaoException;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.ConsultaSession;
 import br.ucs.easydent.ejb.session.DentistaSession;
+import br.ucs.easydent.model.entity.Consulta;
 import br.ucs.easydent.model.entity.Dentista;
 import br.ucs.easydent.model.entity.Usuario;
 
@@ -178,8 +182,17 @@ public class DentistaSessionBean extends BaseSessionBean implements DentistaSess
 		return em.merge(entidade);
 	}
 
-	public void excluir(Usuario usuario, Long id) {
+	public void excluir(Usuario usuario, Long id) throws EasydentException {
 		Dentista dentista = em.find(Dentista.class, id);
+
+		ConsultaFilter filtro = new ConsultaFilter();
+		filtro.setDentista(dentista);
+
+		List<Consulta> consultas = consultaSession.buscarPorFiltro(usuario, new Options(), filtro);
+		if (consultas != null && !consultas.isEmpty()) {
+			throw new ExclusaoNaoPermitida("Não é possível excluir dentistas que possuem agendamentos");
+		}
+
 		if (dentista != null) {
 			em.remove(dentista);
 		}

@@ -15,7 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import br.ucs.easydent.app.dto.filtro.ConsultaFilter;
-import br.ucs.easydent.app.exceptions.ProblemaPermissaoException;
+import br.ucs.easydent.app.exceptions.EasydentException;
 import br.ucs.easydent.app.util.Util;
 import br.ucs.easydent.ejb.session.ConsultaSession;
 import br.ucs.easydent.ejb.session.EntityEJB;
@@ -40,7 +40,8 @@ public class ConsultaService extends EntityService<Consulta> {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Consulta> proximas(@QueryParam("offset") Integer primeiroRegistro,
 			@QueryParam("max-results") Integer quantidadeRegistros, @QueryParam("sort") String ordenacao,
-			@PathParam("quantidade") Integer quantidade, @HeaderParam("X-Auth-Token") String token) {
+			@PathParam("quantidade") Integer quantidade, @HeaderParam("X-Auth-Token") String token)
+			throws RestException {
 
 		Options parametros = new Options(quantidadeRegistros, primeiroRegistro, ordenacao);
 		if (parametros.getQuantidadeRegistros() == null) {
@@ -53,7 +54,7 @@ public class ConsultaService extends EntityService<Consulta> {
 
 		try {
 			return consultaSession.buscarPorFiltro(getUserFromToken(token), parametros, filtro);
-		} catch (ProblemaPermissaoException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 
@@ -64,7 +65,8 @@ public class ConsultaService extends EntityService<Consulta> {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Consulta> ultimasNaoRespondidas(@QueryParam("offset") Integer primeiroRegistro,
 			@QueryParam("max-results") Integer quantidadeRegistros, @QueryParam("sort") String ordenacao,
-			@PathParam("quantidade") Integer quantidade, @HeaderParam("X-Auth-Token") String token) {
+			@PathParam("quantidade") Integer quantidade, @HeaderParam("X-Auth-Token") String token)
+			throws RestException {
 
 		Options parametros = new Options(quantidadeRegistros, primeiroRegistro, ordenacao);
 		if (parametros.getQuantidadeRegistros() == null) {
@@ -77,7 +79,7 @@ public class ConsultaService extends EntityService<Consulta> {
 
 		try {
 			return consultaSession.buscarPorFiltro(getUserFromToken(token), parametros, filtro);
-		} catch (ProblemaPermissaoException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 
@@ -89,7 +91,7 @@ public class ConsultaService extends EntityService<Consulta> {
 	public List<Consulta> buscarPorPeriodo(@HeaderParam("X-Auth-Token") String token,
 			@PathParam("anoInicial") Integer anoInicial, @PathParam("mesInicial") Integer mesInicial,
 			@PathParam("diaInicial") Integer diaInicial, @PathParam("anoFinal") Integer anoFinal,
-			@PathParam("mesFinal") Integer mesFinal, @PathParam("diaFinal") Integer diaFinal) {
+			@PathParam("mesFinal") Integer mesFinal, @PathParam("diaFinal") Integer diaFinal) throws RestException {
 
 		Calendar dataInicial = Util.newCalendar(anoInicial, mesInicial - 1, diaInicial);
 		Util.beginOfTheDay(dataInicial);
@@ -102,12 +104,13 @@ public class ConsultaService extends EntityService<Consulta> {
 
 		List<SituacaoConsultaEnum> situacoes = new ArrayList<>();
 		situacoes.add(SituacaoConsultaEnum.AGENDADA);
+		situacoes.add(SituacaoConsultaEnum.NAO_COMPARECIDA);
 		situacoes.add(SituacaoConsultaEnum.ATENDIDA);
 		filtro.setSituacoes(situacoes);
 
 		try {
 			return consultaSession.buscarPorFiltro(getUserFromToken(token), new Options(), filtro);
-		} catch (ProblemaPermissaoException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 	}

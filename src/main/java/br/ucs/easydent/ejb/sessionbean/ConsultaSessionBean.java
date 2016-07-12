@@ -68,13 +68,16 @@ public class ConsultaSessionBean extends BaseSessionBean implements ConsultaSess
 		Map<String, Object> params = new HashMap<>();
 
 		queryString.append(" SELECT 1 FROM CONSULTA AS C ");
-		queryString.append(" WHERE (1=2 ");
+		queryString.append(" WHERE 1=1 ");
 
 		queryString.append(" AND c.dentista_id = :dentistaId ");
 		params.put("dentistaId", consulta.getDentista().getId());
 
-		queryString.append(" OR (:dataInicial BETWEEN C.DATA AND C.DATAFINAL) ");
-		queryString.append(" OR (:dataFinal BETWEEN C.DATA AND C.DATAFINAL) ");
+		queryString.append(" AND c.fgSituacaoConsultaEnum != :statusDiferente ");
+		params.put("statusDiferente", SituacaoConsultaEnum.CANCELADA.getId());
+
+		queryString.append(" AND ((:dataInicial > C.DATA AND :dataInicial < C.DATAFINAL) ");
+		queryString.append(" OR (:dataFinal > C.DATA AND :dataFinal < C.DATAFINAL) ");
 		queryString.append(" OR (:dataInicial < C.DATA AND :dataFinal > C.DATA) ");
 		queryString.append(" OR (:dataInicial > C.DATA AND :dataFinal < C.DATA)) ");
 		params.put("dataInicial", consulta.getData());
@@ -125,6 +128,11 @@ public class ConsultaSessionBean extends BaseSessionBean implements ConsultaSess
 		if (filtro.getDataMenorDoQue() != null) {
 			queryString.append(" AND e.data < :dataMenorDoQue ");
 			params.put("dataMenorDoQue", filtro.getDataMenorDoQue());
+		}
+
+		if (filtro.getPaciente() != null) {
+			queryString.append(" AND e.paciente = :paciente ");
+			params.put("paciente", filtro.getPaciente());
 		}
 
 		if (filtro.getSituacaoConsulta() != null) {

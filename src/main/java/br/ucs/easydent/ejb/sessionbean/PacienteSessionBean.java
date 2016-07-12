@@ -4,21 +4,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.NotImplementedException;
 
 import br.ucs.easydent.app.dto.filtro.BaseFilter;
+import br.ucs.easydent.app.dto.filtro.ConsultaFilter;
+import br.ucs.easydent.app.exceptions.EasydentException;
+import br.ucs.easydent.app.exceptions.ExclusaoNaoPermitida;
 import br.ucs.easydent.app.exceptions.ProblemaPermissaoException;
 import br.ucs.easydent.app.exceptions.RegistroNaoEncontradoException;
 import br.ucs.easydent.app.util.Util;
+import br.ucs.easydent.ejb.session.ConsultaSession;
 import br.ucs.easydent.ejb.session.PacienteSession;
+import br.ucs.easydent.model.entity.Consulta;
 import br.ucs.easydent.model.entity.Paciente;
 import br.ucs.easydent.model.entity.Usuario;
 
 @Stateless
 public class PacienteSessionBean extends BaseSessionBean implements PacienteSession {
+
+	@EJB
+	private ConsultaSession consultaSession;
 
 	public Paciente buscarPorId(Usuario usuario, Long id)
 			throws ProblemaPermissaoException, RegistroNaoEncontradoException {
@@ -120,8 +129,17 @@ public class PacienteSessionBean extends BaseSessionBean implements PacienteSess
 
 	}
 
-	public void excluir(Usuario usuario, Long id) {
+	public void excluir(Usuario usuario, Long id) throws EasydentException {
 		Paciente paciente = em.find(Paciente.class, id);
+
+		ConsultaFilter filtro = new ConsultaFilter();
+		filtro.setPaciente(paciente);
+
+		List<Consulta> consultas = consultaSession.buscarPorFiltro(usuario, new Options(), filtro);
+		if (consultas != null && !consultas.isEmpty()) {
+			throw new ExclusaoNaoPermitida("Você não pode excluir pacientes que já possuem agendamentos!");
+		}
+
 		if (paciente != null) {
 			em.remove(paciente);
 		}

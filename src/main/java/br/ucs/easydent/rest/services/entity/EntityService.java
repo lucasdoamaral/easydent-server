@@ -18,8 +18,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-import br.ucs.easydent.app.exceptions.HorarioNaoDisponivelException;
-import br.ucs.easydent.app.exceptions.ProblemaPermissaoException;
+import br.ucs.easydent.app.exceptions.EasydentException;
 import br.ucs.easydent.app.exceptions.RegistroNaoEncontradoException;
 import br.ucs.easydent.ejb.session.EntityEJB;
 import br.ucs.easydent.ejb.session.UsuarioSession;
@@ -43,12 +42,10 @@ public abstract class EntityService<T extends Entidade> {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public T buscarPorId(@PathParam("id") Long id, @HeaderParam("X-Auth-Token") String token) {
+	public T buscarPorId(@PathParam("id") Long id, @HeaderParam("X-Auth-Token") String token) throws RestException {
 		try {
 			return getEJB().buscarPorId(getUserFromToken(token), id);
-		} catch (ProblemaPermissaoException e) {
-			throw new RestException(e);
-		} catch (RegistroNaoEncontradoException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 	}
@@ -57,13 +54,13 @@ public abstract class EntityService<T extends Entidade> {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<T> listar(@QueryParam("offset") Integer primeiroRegistro,
 			@QueryParam("max-results") Integer quantidadeRegistros, @QueryParam("sort") String ordenacao,
-			@HeaderParam("X-Auth-Token") String token) {
+			@HeaderParam("X-Auth-Token") String token) throws RestException {
 
 		Options parametros = new Options(quantidadeRegistros, primeiroRegistro, ordenacao);
 
 		try {
 			return getEJB().buscarTodos(getUserFromToken(token), parametros);
-		} catch (ProblemaPermissaoException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 
@@ -72,20 +69,20 @@ public abstract class EntityService<T extends Entidade> {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public T criar(T entidade, @HeaderParam("X-Auth-Token") String token) {
+	public T criar(T entidade, @HeaderParam("X-Auth-Token") String token) throws RestException {
 		try {
 			return getEJB().salvar(getUserFromToken(token), entidade);
-		} catch (ProblemaPermissaoException | HorarioNaoDisponivelException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 	}
 
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public T alterar(T entidade, @HeaderParam("X-Auth-Token") String token) {
+	public T alterar(T entidade, @HeaderParam("X-Auth-Token") String token) throws RestException {
 		try {
 			return getEJB().salvar(getUserFromToken(token), entidade);
-		} catch (ProblemaPermissaoException | HorarioNaoDisponivelException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 	}
@@ -93,10 +90,10 @@ public abstract class EntityService<T extends Entidade> {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void excluir(@PathParam("id") Long id, @HeaderParam("X-Auth-Token") String token) {
+	public void excluir(@PathParam("id") Long id, @HeaderParam("X-Auth-Token") String token) throws RestException {
 		try {
 			getEJB().excluir(getUserFromToken(token), id);
-		} catch (ProblemaPermissaoException e) {
+		} catch (EasydentException e) {
 			throw new RestException(e);
 		}
 	}

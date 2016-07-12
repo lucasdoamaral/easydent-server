@@ -1,13 +1,5 @@
 package teste;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
-import java.util.List;
-
-import br.ucs.easydent.model.entity.HorarioDisponivel;
-
 public class Teste {
 
 	public static void main(String[] args) {

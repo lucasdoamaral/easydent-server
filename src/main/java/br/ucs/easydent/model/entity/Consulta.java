@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import br.ucs.easydent.model.enums.SituacaoConsultaEnum;
@@ -147,6 +148,7 @@ public class Consulta implements EntidadeComEstabelecimento {
 		this.fgSituacaoConsultaEnum = situacaoConsultaEnum != null ? situacaoConsultaEnum.getId() : null;
 	}
 
+	@JsonIgnore
 	public SituacaoConsultaEnum getSituacaoConsultaEnum() {
 		return SituacaoConsultaEnum.getById(fgSituacaoConsultaEnum);
 	}
@@ -187,29 +189,47 @@ public class Consulta implements EntidadeComEstabelecimento {
 	}
 
 	public void setData(Calendar data) {
-		this.data = data;
-		if (data != null && duracaoMinutos != null) {
-			Calendar _data = (Calendar) data.clone();
-			_data.add(Calendar.MINUTE, duracaoMinutos);
-			this.dataFinal = _data;
+		setData(data, true);
+	}
+
+	public void setData(Calendar data, boolean notNull) {
+		if (data != null || !notNull) {
+			this.data = data;
+			if (duracaoMinutos != null) {
+				Calendar _data = (Calendar) data.clone();
+				_data.add(Calendar.MINUTE, duracaoMinutos);
+				this.dataFinal = _data;
+			}
 		}
 	}
 
 	public void setDuracaoMinutos(Integer duracaoMinutos) {
-		this.duracaoMinutos = duracaoMinutos;
-		if (duracaoMinutos != null && data != null) {
-			Calendar _dataFinal = (Calendar) data.clone();
-			_dataFinal.add(Calendar.MINUTE, duracaoMinutos);
-			this.dataFinal = _dataFinal;
+		setDuracaoMinutos(duracaoMinutos, true);
+	}
+
+	public void setDuracaoMinutos(Integer duracaoMinutos, boolean notNull) {
+		if (duracaoMinutos != null || !notNull) {
+			this.duracaoMinutos = duracaoMinutos;
+			if (data != null) {
+				Calendar _dataFinal = (Calendar) data.clone();
+				_dataFinal.add(Calendar.MINUTE, duracaoMinutos);
+				this.dataFinal = _dataFinal;
+			}
 		}
 	}
 
 	public void setDataFinal(Calendar dataFinal) {
-		this.dataFinal = dataFinal;
-		if (dataFinal != null && duracaoMinutos != null) {
-			Calendar _data = (Calendar) dataFinal.clone();
-			_data.add(Calendar.MINUTE, duracaoMinutos * -1);
-			this.dataFinal = _data;
+		setDataFinal(dataFinal, true);
+	}
+
+	public void setDataFinal(Calendar dataFinal, boolean notNull) {
+		if (dataFinal != null || !notNull) {
+			this.dataFinal = dataFinal;
+			if (duracaoMinutos != null) {
+				Calendar _data = (Calendar) dataFinal.clone();
+				_data.add(Calendar.MINUTE, duracaoMinutos * -1);
+				this.dataFinal = _data;
+			}
 		}
 	}
 
